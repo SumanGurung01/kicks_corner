@@ -1,4 +1,6 @@
-export const allSneakers = [
+import { Sneaker } from "@/typing";
+
+export const allSneakers: Sneaker[] = [
   {
     name: "Air Jordan 1 Retro High OG 'Shadow' 2018",
     image:
@@ -1311,14 +1313,15 @@ export const allSneakers = [
   },
 ];
 
-export function countSilhouettes(collection) {
+export function countSilhouettes(collection: Sneaker[]) {
   // Create an object to store silhouette counts
-  const silhouetteCounts = {};
+  type Silhouettes = Record<string, number>;
+  const silhouetteCounts: Silhouettes = {};
 
   // Iterate through each object in the array
-  collection.forEach((obj) => {
+  collection.forEach((obj: Sneaker) => {
     // Extract the silhouette property from the object
-    const silhouette = obj.silhouette;
+    const silhouette: string = obj.silhouette;
 
     // If the silhouette is not in the counts object, initialize it with count 1
     if (!silhouetteCounts[silhouette]) {

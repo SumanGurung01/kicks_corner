@@ -25,14 +25,13 @@ export const POST = async (request: NextRequest, response: NextResponse) => {
       payment_method_types: ["card"],
       line_items: extractingItems,
       mode: "payment",
-      success_url: "http://localhost:3000/confirm",
-      cancel_url: "http://localhost:3000/cart",
+      success_url: "https://kicks-corner.vercel.app/confirm",
+      cancel_url: "https://kicks-corner.vercel.app/cart",
       metadata: {
         user: user.fullName,
       },
     });
 
-    console.log(session);
     return NextResponse.json({ id: session.id });
   } catch (err: any) {
     return NextResponse.json({ message: err.message });

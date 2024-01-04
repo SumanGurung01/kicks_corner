@@ -3,19 +3,19 @@
 import React from "react";
 import ThemeToggler from "./theme-toggler";
 import { ShoppingBag, List } from "lucide-react";
-import { zustandStore } from "@/store/store";
+import { useStore } from "@/store/store";
 import Link from "next/link";
 import { SignInButton, SignedOut, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 
-function Navbar() {
+const Navbar: React.FC = () => {
   // to display number of item in cart
-  const [cart] = zustandStore((state) => [state.cart]);
+  const [cart] = useStore((state) => [state.cart]); // store cart items
 
   return (
     <nav className="flex h-20 items-center justify-center">
-      <div className="mx-2 flex w-full max-w-[1200px] items-center justify-around md:w-11/12 lg:w-3/4">
-        <div className="flex-1">
+      <div className="mx-2 flex w-full max-w-[1200px] items-center justify-between md:w-11/12 lg:w-3/4">
+        <div>
           <Link href={"/"}>
             <Image
               src="/logo.png"
@@ -50,6 +50,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

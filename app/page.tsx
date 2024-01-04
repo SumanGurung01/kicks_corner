@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { allSneakers, countSilhouettes } from "@/lib/sneaker";
 import Link from "next/link";
-import { CarouselDemo } from "@/components/banner";
+import CarouselDemo from "@/components/banner";
 import {
   Select,
   SelectContent,
@@ -12,11 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Sneaker } from "@/typing";
+import { generateOrderId } from "@/method/method";
 
-export default function Home() {
-  const [sneakers, setSneakers] = useState([]); // store all sneakers
+const Home: React.FC = () => {
+  const [sneakers, setSneakers] = useState<Sneaker[]>([]); // store all sneakers
 
-  const [catagory, setCatagory] = useState("All Sneakers"); // store selected catagory
+  const [catagory, setCatagory] = useState<string>("All Sneakers"); // store selected catagory
 
   const sneakerCatagory = countSilhouettes(allSneakers); // returns the catagory based on silhouettes
 
@@ -62,7 +64,7 @@ export default function Home() {
             <SelectItem value={"All Sneakers"}>All Sneakers</SelectItem>
 
             {Object.keys(sneakerCatagory).map((catagory) => (
-              <SelectItem value={catagory}>
+              <SelectItem value={catagory} key={generateOrderId()}>
                 {catagory} - ({sneakerCatagory[catagory]})
               </SelectItem>
             ))}
@@ -78,6 +80,7 @@ export default function Home() {
             <Link
               href={`/sneaker/${sneaker.id}`}
               className="m-5 w-[320px] duration-300 hover:cursor-pointer"
+              key={generateOrderId()}
             >
               <Image
                 src={sneaker.image}
@@ -98,4 +101,6 @@ export default function Home() {
       </main>
     </div>
   );
-}
+};
+
+export default Home;

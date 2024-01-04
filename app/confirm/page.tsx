@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
-function page() {
+const Confirm: React.FC = () => {
   return (
     <div className="mt-10 flex flex-col items-center justify-center ">
       <p className="my-10">Your order is confirmed</p>
@@ -11,6 +11,6 @@ function page() {
       </Link>
     </div>
   );
-}
+};
 
-export default page;
+export default Confirm;

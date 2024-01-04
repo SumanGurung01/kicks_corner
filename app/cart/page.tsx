@@ -9,26 +9,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { zustandStore } from "@/store/store";
+import { useStore } from "@/store/store";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { useUser } from "@clerk/nextjs";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase";
+import { Order } from "@/typing";
 
-export default function page() {
-  const [cart, setCart] = zustandStore((state) => [state.cart, state.setCart]); // store cart items
+const Cart: React.FC = () => {
+  const [cart, setCart] = useStore((state) => [state.cart, state.setCart]); // store cart items
+  const { user } = useUser();
 
   //remove item from cart
-  const removeItem = (item: object) => {
+  const removeItem = (item: Order) => {
     const tempCart = cart.filter(
-      (sneaker: object) => sneaker.order_id !== item.order_id,
+      (sneaker: Order) => sneaker.order_id !== item.order_id,
     );
 
-    localStorage.setItem("cart", JSON.stringify(tempCart));
     setCart(tempCart);
     toast.success("Sneaker Removed");
   };
@@ -41,16 +42,14 @@ export default function page() {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
   );
 
-  const { user } = useUser();
-
   const handleCheckout = async () => {
-    if (user === null) {
+    if (!user) {
       toast.error("Signin required for Payment");
       return;
     }
     const stripe = await stripePromise;
 
-    fetch("http://localhost:3000/api/checkout", {
+    fetch("https://kicks-corner.vercel.app/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -75,11 +74,8 @@ export default function page() {
 
         await addDoc(collection(db, "users", user.id, "order"), {
           item: order,
-          time: serverTimestamp(),
+          time: new Date(),
         });
-
-        // then remove item from cart and localstorage
-        localStorage.removeItem("cart");
 
         // finally redirect to confirm page
         stripe?.redirectToCheckout({ sessionId: data.id });
@@ -120,7 +116,7 @@ export default function page() {
               <p className="flex-1 text-lg font-bold">
                 Total : $
                 {cart.reduce(
-                  (acc: number, sneaker: object) => acc + sneaker.price,
+                  (acc: number, sneaker: Order) => acc + sneaker.price,
                   0,
                 )}
               </p>
@@ -138,7 +134,7 @@ export default function page() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cart.map((item: object) => (
+                {cart.map((item: Order) => (
                   <TableRow key={item.order_id}>
                     <TableCell>
                       <Image
@@ -166,4 +162,6 @@ export default function page() {
       </div>
     </div>
   );
-}
+};
+
+export default Cart;

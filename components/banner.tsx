@@ -1,9 +1,9 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 
-export function CarouselDemo() {
+const CarouselDemo: React.FC = () => {
   // banner image url
-  const bannerUrl = [
+  const bannerUrl: string[] = [
     "https://www.gingermediagroup.com/wp-content/uploads/2023/04/image-3.jpeg",
     "https://static.ebayinc.com/static/assets/Uploads/Stories/Articles/_resampled/FillWyIxMDI0IiwiNTEyIl0/060518-SneakerEvent-BU-EventName-EventBanner-Tall-1536x924-Final2.jpg",
 
@@ -29,4 +29,6 @@ export function CarouselDemo() {
       ))}
     </Carousel>
   );
-}
+};
+
+export default CarouselDemo;

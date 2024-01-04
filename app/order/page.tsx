@@ -13,17 +13,19 @@ import { db } from "@/firebase";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { OrderDatabase } from "@/typing";
+import { generateOrderId } from "@/method/method";
 
-async function page() {
+const Order: React.FC = async () => {
   const { userId } = auth();
 
   // fetch orders from firebase database
   const data = await getDocs(collection(db, "users", userId!, "order"));
 
   // data recieved from database cannot be used directly . it need to be processed like this
-  const orders = data.docs.map((doc: any) => ({
+  const orders: OrderDatabase[] = data.docs.map((doc: any) => ({
     item: doc.data().item,
-    time: new Date(doc.data().time?.seconds * 1000) || undefined,
+    time: new Date(doc.data().timestamp?.seconds * 1000) || undefined,
   }));
 
   return (
@@ -56,16 +58,18 @@ async function page() {
               <TableRow>
                 <TableHead>No</TableHead>
                 <TableHead>Items</TableHead>
-                <TableHead>Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders.map((order: object, index) => (
-                <TableRow>
+              {orders.map((order: OrderDatabase, index: number) => (
+                <TableRow key={generateOrderId()}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>
                     {order.item.map((sneaker) => (
-                      <div className="flex items-center">
+                      <div
+                        className="flex items-center"
+                        key={generateOrderId()}
+                      >
                         <img src={sneaker.image} className="mr-3 h-20 w-20" />
                         <p>
                           {sneaker.name} - ${sneaker.price}
@@ -73,7 +77,6 @@ async function page() {
                       </div>
                     ))}
                   </TableCell>
-                  <TableCell>{order.time.toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -82,6 +85,6 @@ async function page() {
       </div>
     </div>
   );
-}
+};
 
-export default page;
+export default Order;
