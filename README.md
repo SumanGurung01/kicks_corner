@@ -29,7 +29,7 @@ Whether you're on your desktop, tablet, or mobile device, Kicks Store ensures a 
 - **Shad-cn** for UI Components
 - **Zustand** for State Management
 - **Clerk** for User Authentication
-- **Firebase** as database
+- **Firebase** as Database
 - **Stripe** for Payment
 
 ## Feedback
