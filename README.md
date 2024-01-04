@@ -27,6 +27,7 @@ Whether you're on your desktop, tablet, or mobile device, Kicks Store ensures a 
 ## Technologies Used
 - **Next.js** in Frontend
 - **Shad-cn** for UI Components
+- **Tailwind CSS** for Styling 
 - **Zustand** for State Management
 - **Clerk** for User Authentication
 - **Firebase** as Database
