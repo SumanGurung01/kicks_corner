@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { allSneakers } from "@/lib/sneaker";
 import { useStore } from "@/store/store";
@@ -65,12 +64,13 @@ const Sneakers: React.FC = ({ params }: any) => {
   return (
     <div className="flex items-center justify-center">
       <div className="flex max-w-[1200px] flex-col md:flex-row lg:w-3/4">
-        <Image
+        <img
           width={1000}
           height={1000}
           src={selectedSneaker.image}
           alt="sneaker"
           className="bg-zinc-100 md:w-1/2 lg:w-1/2 dark:bg-zinc-900"
+          loading="lazy"
         />
 
         <div className="m-2 md:ml-8 md:w-1/2 lg:w-1/2 dark:text-zinc-300">

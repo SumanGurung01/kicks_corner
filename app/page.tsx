@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { allSneakers, countSilhouettes } from "@/lib/sneaker";
 import Link from "next/link";
 import CarouselDemo from "@/components/banner";
@@ -82,12 +81,13 @@ const Home: React.FC = () => {
               className="m-5 w-[320px] duration-300 hover:cursor-pointer"
               key={generateOrderId()}
             >
-              <Image
+              <img
                 src={sneaker.image}
                 alt="sneaker image"
                 width={320}
                 height={320}
                 className="bg-zinc-100 duration-300 hover:scale-105 dark:bg-zinc-900"
+                loading="lazy"
               />
               <p className="my-2 text-sm font-bold">
                 {sneaker.name.toUpperCase()}

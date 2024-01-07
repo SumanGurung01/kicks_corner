@@ -24,7 +24,7 @@ const CarouselDemo: React.FC = () => {
     >
       {bannerUrl.map((url) => (
         <div key={url}>
-          <img src={url} className="object-fill" />
+          <img src={url} className="object-fill" loading="lazy"/>
         </div>
       ))}
     </Carousel>

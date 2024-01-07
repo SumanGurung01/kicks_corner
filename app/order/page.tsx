@@ -11,7 +11,6 @@ import {
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import { auth } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 import { OrderDatabase } from "@/typing";
 import { generateOrderId } from "@/method/method";
@@ -33,7 +32,7 @@ const Order: React.FC = async () => {
       <div className="md:w-11/12 lg:w-3/4">
         {orders.length === 0 ? (
           <div className="mt-36 flex flex-col items-center justify-center gap-10">
-            <Image
+            <img
               src={
                 "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
               }
@@ -41,6 +40,7 @@ const Order: React.FC = async () => {
               height={100}
               alt="empty cart"
               className="dark:invert"
+              loading="lazy"
             />
 
             <p className="text-xl font-semibold">Your order list is empty</p>
@@ -70,7 +70,11 @@ const Order: React.FC = async () => {
                         className="flex items-center"
                         key={generateOrderId()}
                       >
-                        <img src={sneaker.image} className="mr-3 h-20 w-20" />
+                        <img
+                          src={sneaker.image}
+                          className="mr-3 h-20 w-20"
+                          loading="lazy"
+                        />
                         <p>
                           {sneaker.name} - ${sneaker.price}
                         </p>

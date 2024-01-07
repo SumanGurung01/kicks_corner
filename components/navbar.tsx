@@ -6,7 +6,6 @@ import { ShoppingBag, List } from "lucide-react";
 import { useStore } from "@/store/store";
 import Link from "next/link";
 import { SignInButton, SignedOut, UserButton } from "@clerk/nextjs";
-import Image from "next/image";
 
 const Navbar: React.FC = () => {
   // to display number of item in cart
@@ -17,12 +16,13 @@ const Navbar: React.FC = () => {
       <div className="mx-2 flex w-full max-w-[1200px] items-center justify-between md:w-11/12 lg:w-3/4">
         <div>
           <Link href={"/"}>
-            <Image
+            <img
               src="/logo.png"
               width={70}
               height={70}
               alt="logo"
               className="dark:invert"
+              loading="lazy"
             />
           </Link>
         </div>

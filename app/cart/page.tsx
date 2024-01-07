@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import { useStore } from "@/store/store";
 import { Trash } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
@@ -90,7 +89,7 @@ const Cart: React.FC = () => {
       <div className="md:w-11/12 lg:w-3/4">
         {cart.length === 0 ? (
           <div className="mt-36 flex flex-col items-center justify-center gap-10">
-            <Image
+            <img
               src={
                 "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
               }
@@ -98,7 +97,8 @@ const Cart: React.FC = () => {
               height={100}
               alt="empty cart"
               className="dark:invert"
-            ></Image>
+              loading="lazy"
+            ></img>
 
             <p className="text-xl font-semibold">Your cart is empty</p>
 
@@ -137,11 +137,12 @@ const Cart: React.FC = () => {
                 {cart.map((item: Order) => (
                   <TableRow key={item.order_id}>
                     <TableCell>
-                      <Image
+                      <img
                         src={item.image}
                         width={110}
                         height={110}
                         alt="sneaker"
+                        loading="lazy"
                       />
                     </TableCell>
                     <TableCell>{item.name}</TableCell>

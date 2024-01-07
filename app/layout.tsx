@@ -22,9 +22,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <head>
-            <link rel="icon" href="/logo.png"></link>
-          </head>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
