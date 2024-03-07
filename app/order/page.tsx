@@ -28,65 +28,60 @@ const Order: React.FC = async () => {
   }));
 
   return (
-    <div className="flex justify-center">
-      <div className="md:w-11/12 lg:w-3/4">
-        {orders.length === 0 ? (
-          <div className="mt-36 flex flex-col items-center justify-center gap-10">
-            <img
-              src={
-                "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
-              }
-              width={100}
-              height={100}
-              alt="empty cart"
-              className="dark:invert"
-              loading="lazy"
-            />
+    <div className="flex w-full justify-center">
+      {orders.length === 0 ? (
+        <div className="mt-36 flex flex-col items-center justify-center gap-10">
+          <img
+            src={
+              "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
+            }
+            width={100}
+            height={100}
+            alt="empty cart"
+            className="dark:invert"
+            loading="lazy"
+          />
 
-            <p className="text-xl font-semibold">Your order list is empty</p>
-            <p className="text-base text-zinc-500">
-              looks like you have not ordered anything yet
-            </p>
+          <p className="text-xl font-semibold">Your order list is empty</p>
+          <p className="text-base text-zinc-500">
+            looks like you have not ordered anything yet
+          </p>
 
-            <Link href={"/"}>
-              <Button>Continue Shopping</Button>
-            </Link>
-          </div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>No</TableHead>
-                <TableHead>Items</TableHead>
+          <Link href={"/"}>
+            <Button>Continue Shopping</Button>
+          </Link>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>No</TableHead>
+              <TableHead>Items</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders.map((order: OrderDatabase, index: number) => (
+              <TableRow key={generateOrderId()}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  {order.item.map((sneaker) => (
+                    <div className="flex items-center" key={generateOrderId()}>
+                      <img
+                        src={sneaker.image[0]}
+                        className="mr-3 h-20 w-20"
+                        loading="lazy"
+                      />
+                      <p>
+                        {sneaker.name} - ${sneaker.price}
+                      </p>
+                    </div>
+                  ))}
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order: OrderDatabase, index: number) => (
-                <TableRow key={generateOrderId()}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {order.item.map((sneaker) => (
-                      <div
-                        className="flex items-center"
-                        key={generateOrderId()}
-                      >
-                        <img
-                          src={sneaker.image}
-                          className="mr-3 h-20 w-20"
-                          loading="lazy"
-                        />
-                        <p>
-                          {sneaker.name} - ${sneaker.price}
-                        </p>
-                      </div>
-                    ))}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 };

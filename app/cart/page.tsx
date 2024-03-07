@@ -18,6 +18,7 @@ import { useUser } from "@clerk/nextjs";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase";
 import { Order } from "@/typing";
+import { Carattere } from "next/font/google";
 
 const Cart: React.FC = () => {
   const [cart, setCart] = useStore((state) => [state.cart, state.setCart]); // store cart items
@@ -48,7 +49,7 @@ const Cart: React.FC = () => {
     }
     const stripe = await stripePromise;
 
-    fetch("https://kicks-corner.vercel.app/api/checkout", {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -58,6 +59,7 @@ const Cart: React.FC = () => {
     })
       .then((response) => response.json())
       .then(async (data) => {
+        console.log(data);
         // if succcess it recieves a session id use to redirect to success page
 
         // after successful payment ass item from cart to firebase database
@@ -86,81 +88,79 @@ const Cart: React.FC = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="md:w-11/12 lg:w-3/4">
-        {cart.length === 0 ? (
-          <div className="mt-36 flex flex-col items-center justify-center gap-10">
-            <img
-              src={
-                "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
-              }
-              width={100}
-              height={100}
-              alt="empty cart"
-              className="dark:invert"
-              loading="lazy"
-            ></img>
+      {cart.length === 0 ? (
+        <div className="mt-36 flex flex-col items-center justify-center gap-10">
+          <img
+            src={
+              "https://www.pngkey.com/png/full/16-161785_sad-face-in-rounded-square-comments-cartoon-sad.png"
+            }
+            width={100}
+            height={100}
+            alt="empty cart"
+            className="dark:invert"
+            loading="lazy"
+          ></img>
 
-            <p className="text-xl font-semibold">Your cart is empty</p>
+          <p className="text-xl font-semibold">Your cart is empty</p>
 
-            <p className="text-base text-zinc-500">
-              looks like you have not added anything in your cart yet
+          <p className="text-base text-zinc-500">
+            looks like you have not added anything in your cart yet
+          </p>
+
+          <Link href={"/"}>
+            <Button>Continue Shopping</Button>
+          </Link>
+        </div>
+      ) : (
+        <div className="w-full">
+          <div className="my-4 flex items-center px-2">
+            <p className="flex-1 text-lg font-bold">
+              Total : $
+              {cart.reduce(
+                (acc: number, sneaker: Order) => acc + sneaker.price,
+                0,
+              )}
             </p>
-
-            <Link href={"/"}>
-              <Button>Continue Shopping</Button>
-            </Link>
+            <Button onClick={handleCheckout} className="flex justify-end">
+              Checkout
+            </Button>
           </div>
-        ) : (
-          <div>
-            <div className="my-4 flex items-center px-2">
-              <p className="flex-1 text-lg font-bold">
-                Total : $
-                {cart.reduce(
-                  (acc: number, sneaker: Order) => acc + sneaker.price,
-                  0,
-                )}
-              </p>
-              <Button onClick={handleCheckout} className="flex justify-end">
-                Checkout
-              </Button>
-            </div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Sneaker</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Price</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Sneaker</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Size</TableHead>
+                <TableHead>Price</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {cart.map((item: Order) => (
+                <TableRow key={item.order_id}>
+                  <TableCell>
+                    <img
+                      src={item.image[0]}
+                      width={110}
+                      height={110}
+                      alt="sneaker"
+                      loading="lazy"
+                    />
+                  </TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>UK {item.size}</TableCell>
+                  <TableCell>$ {item.price}</TableCell>
+                  <TableCell>
+                    <Trash
+                      onClick={() => removeItem(item)}
+                      className="hover:cursor-pointer"
+                    />
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {cart.map((item: Order) => (
-                  <TableRow key={item.order_id}>
-                    <TableCell>
-                      <img
-                        src={item.image}
-                        width={110}
-                        height={110}
-                        alt="sneaker"
-                        loading="lazy"
-                      />
-                    </TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>UK {item.size}</TableCell>
-                    <TableCell>$ {item.price}</TableCell>
-                    <TableCell>
-                      <Trash
-                        onClick={() => removeItem(item)}
-                        className="hover:cursor-pointer"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-      </div>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 };

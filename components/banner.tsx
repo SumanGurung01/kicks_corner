@@ -20,11 +20,10 @@ const CarouselDemo: React.FC = () => {
       stopOnHover={false}
       showStatus={false}
       showThumbs={false}
-      className="w-full max-w-[1200px] md:w-3/4"
     >
       {bannerUrl.map((url) => (
         <div key={url}>
-          <img src={url} className="object-fill" loading="lazy"/>
+          <img src={url} className="object-fill" loading="lazy" />
         </div>
       ))}
     </Carousel>

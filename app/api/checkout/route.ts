@@ -13,9 +13,9 @@ export const POST = async (request: NextRequest, response: NextResponse) => {
       price_data: {
         currency: "usd",
         product_data: {
-          images: [sneaker.image],
+          images: [sneaker.image[0]],
           name: sneaker.name,
-          description: sneaker.desceiption,
+          description: sneaker.description,
         },
         unit_amount: sneaker.price * 100,
       },
@@ -25,8 +25,8 @@ export const POST = async (request: NextRequest, response: NextResponse) => {
       payment_method_types: ["card"],
       line_items: extractingItems,
       mode: "payment",
-      success_url: "https://kicks-corner.vercel.app/confirm",
-      cancel_url: "https://kicks-corner.vercel.app/cart",
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/confirm`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
       metadata: {
         user: user.fullName,
       },
